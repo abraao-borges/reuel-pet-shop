@@ -19,7 +19,7 @@ body {
     --border-color: #e0e0e0;
 }
 
-h1, h2, h3, .logo, .section-title, .login-title, .cart-item-total {
+h1, h2, h3, .logo, .login-title, .cart-item-total, .section-title {
     font-family: "Fredoka", sans-serif;
     letter-spacing: 0.5px;
 }
@@ -145,26 +145,43 @@ nav { background-color: white; border-bottom: 1px solid var(--border-color); }
 .prev { left: 15px; }
 
 /* =========================================
-   4. SECTIONS & LAYOUT (HOME)
+   4. HOME LAYOUT & SECTIONS
    ========================================= */
-.features { background-color: white; padding: 20px 0; border-bottom: 1px solid var(--border-color); }
-.features-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-around; padding: 0 20px; }
-.feature-item { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600; }
-
-.section-container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-.section-title { font-size: 24px; margin-bottom: 15px; color: #333; margin-top: 0; }
-
-/* Promo Section */
-.promo-bg {
-    background-color: #fff5f5;
-    border-radius: 12px;
-    margin: 40px auto;
+.section-container { 
     max-width: 1200px; 
-    padding: 30px 20px;
+    margin: 0 auto; 
+    padding: 10px; 
 }
 
-/* Services Grid */
-.services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 20px; }
+.section-title { 
+    font-size: 24px; 
+    margin-bottom: 15px; 
+    color: #333; 
+    margin-top: 0; 
+}
+
+/* Services Section (Top Margin Fix) */
+.services-section {
+    margin-top: 20px; /* Added spacing from Hero */
+    margin-bottom: 40px;
+    padding: 0 20px;
+}
+
+.services-grid { 
+    display: grid; 
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 20px; 
+    margin-top: 20px; 
+}
+
+/* Service Link Wrapper */
+.service-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    height: 100%;
+}
+.service-link .service-card { height: 100%; }
 
 .service-card {
     background: white;
@@ -196,13 +213,22 @@ nav { background-color: white; border-bottom: 1px solid var(--border-color); }
 }
 .service-btn:hover { background-color: #001f7a; }
 
+/* Promo Section */
+.promo-bg {
+    
+    background-color: var(--primary-blue);
+    border-radius: 12px;
+    margin: 20px auto;
+    max-width: 1200px; 
+    padding: 30px 30px;
+}
+
 /* =========================================
    5. PRODUCT GRID & CARDS
    ========================================= */
 .product-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* Default 3 columns */
-    /* Auto-fit alternative if you prefer flexibility: grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); */
+    grid-template-columns: repeat(4, 1fr);
     gap: 20px;
     padding: 20px 0;
     width: 100%;
@@ -221,13 +247,12 @@ nav { background-color: white; border-bottom: 1px solid var(--border-color); }
 }
 .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
 
-/* FIXED IMAGE STYLE: Contain ensures full product is visible without cropping */
 .product-image {
     width: 100%;
     height: 220px;
     object-fit: contain; 
     margin-bottom: 15px;
-    padding: 10px; /* Adds breathing room so image doesn't touch edges */
+    padding: 10px;
 }
 
 .product-title { font-size: 16px; font-weight: 400; color: #333; margin-bottom: 5px; line-height: 1.2; }
@@ -245,24 +270,59 @@ nav { background-color: white; border-bottom: 1px solid var(--border-color); }
 /* =========================================
    6. INSTAGRAM SECTION
    ========================================= */
-.instagram-section { padding: 60px 0; background-color: #fff; width: 100%; overflow: hidden; }
-.instagram-container { max-width: 1200px; margin: 0 auto; padding: 0 20px; text-align: center; }
-.instagram-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.instagram-section { 
+    padding: 60px 0; 
+    background-color: #fff; 
+    width: 100%; 
+    overflow: visible; 
+}
+
+.instagram-container { 
+    max-width: 1200px; 
+    margin: 0 auto; 
+    padding: 0 20px; 
+    text-align: center; 
+}
+
+.instagram-grid { 
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+    width: 100%;
+    grid-auto-rows: auto;
+}
 
 .insta-embed-wrapper {
-    width: 100%;
-    min-height: 450px;
     background: #fff;
-    display: flex; justify-content: center;
+    width: 100%;
+    min-height: 480px; 
+    display: flex; 
+    justify-content: center;
+    align-items: flex-start; 
+    overflow: hidden;
+    border-radius: 12px;
+    border: 1px solid #eee;
 }
-.insta-embed-wrapper .instagram-media { min-width: 100% !important; width: 100% !important; margin: 0 !important; }
+
+.insta-embed-wrapper .instagram-media { 
+    min-width: 100% !important; 
+    width: 100% !important; 
+    margin: 0 !important; 
+    box-shadow: none !important; 
+    border: none !important;
+}
 
 /* =========================================
    7. LOGIN PAGE
    ========================================= */
 .login-container {
-    display: flex; justify-content: center; align-items: center;
-    min-height: 80vh; padding: 40px 20px; background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column; /* ADD THIS: Stacks the card and button vertically */
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh; 
+    padding: 40px 20px;
+    background-color: #f4f4f4;
 }
 .login-card {
     background: white; padding: 40px; border-radius: 12px;
@@ -299,7 +359,6 @@ nav { background-color: white; border-bottom: 1px solid var(--border-color); }
 .cart-item { display: flex; align-items: center; border-bottom: 1px solid #f0f0f0; padding: 20px 0; gap: 15px; }
 .cart-item:last-child { border-bottom: none; }
 
-/* FIXED IMAGE STYLE FOR CART: Contain prevents cutting here too */
 .cart-item-image {
     width: 80px; height: 80px;
     object-fit: contain; 
@@ -349,14 +408,177 @@ nav { background-color: white; border-bottom: 1px solid var(--border-color); }
 .checkout-btn:hover { background-color: #27ae60; }
 
 /* =========================================
-   9. FOOTER
+   9. ORDERS PAGE (PEDIDOS)
+   ========================================= */
+.page-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    min-height: 80vh;
+}
+
+.orders-wrapper .section-title {
+    margin-bottom: 30px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+.order-card {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 25px;
+    transition: box-shadow 0.2s;
+}
+.order-card:hover { box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.order-id { display: block; font-weight: 700; font-size: 18px; color: var(--primary-blue); font-family: "Fredoka", sans-serif; }
+.order-date { font-size: 13px; color: #888; }
+
+.order-status {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+.status-delivered { background-color: #e8f5e9; color: #2e7d32; }
+.status-transit { background-color: #fff3e0; color: #ef6c00; }
+.status-cancelled { background-color: #ffebee; color: #c62828; }
+
+.order-items { margin-bottom: 20px; }
+.order-item-row { display: flex; align-items: center; margin-bottom: 15px; }
+
+.order-thumb {
+    width: 60px; height: 60px; object-fit: contain;
+    border: 1px solid #eee; border-radius: 8px;
+    padding: 5px; margin-right: 15px;
+}
+
+.order-item-details h4 { font-size: 15px; color: #333; margin-bottom: 4px; }
+.order-item-details p { font-size: 13px; color: #666; }
+
+.divider { border: 0; border-top: 1px solid #f0f0f0; margin: 15px 0; }
+
+.order-footer { display: flex; justify-content: space-between; align-items: center; }
+.order-total span { font-size: 14px; color: #666; margin-right: 8px; }
+.order-total strong { font-size: 18px; color: #333; }
+.order-actions { display: flex; gap: 10px; }
+
+.primary-btn, .secondary-btn {
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: "Fredoka", sans-serif;
+    transition: all 0.2s;
+}
+
+.primary-btn { background-color: var(--primary-blue); color: white; border: 1px solid var(--primary-blue); }
+.primary-btn:hover { background-color: #001f7a; }
+
+.secondary-btn { background-color: white; color: #666; border: 1px solid #ccc; }
+.secondary-btn:hover { border-color: #999; color: #333; }
+
+/* =========================================
+   10. SERVICE DETAIL - ROUNDED & SHADOW
+   ========================================= */
+
+.service-detail-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    display: grid;
+    /* Prevents columns from expanding beyond 50% width */
+    grid-template-columns: repeat(2, minmax(0, 1fr)); 
+    gap: 50px;
+    align-items: center;
+    /* Strict limit: Section height is roughly the screen height */
+    min-height: calc(100vh - 150px); 
+}
+
+/* 1. THE IMAGE CONTAINER (The "Canvas") */
+.service-image-col {
+    width: 100%;
+    /* Limits height so it never exceeds the viewport */
+    max-height: 70vh; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    /* ROUND EDGES & SHADOW */
+    border-radius: 30px; /* Adjust for more/less roundness */
+    background-color: #ffffff;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), 
+                0 5px 15px rgba(0, 0, 0, 0.04);
+    
+    /* This clips the giant image to the rounded corners of the container */
+    overflow: hidden; 
+}
+
+/* 2. THE IMAGE (Strictly limited to container) */
+.service-image-large {
+    object-fit: contain; 
+    max-width: 100%; 
+    max-height: 100%; 
+    display: block;
+}
+
+/* Specific fix for the spray bottle (Banho e Tosa) */
+/* We use 'contain' here so the bottle isn't cropped */
+.service-image-large.with-padding {
+    object-fit: contain;
+    padding: 0%; 
+}
+
+/* 3. TEXT INFO */
+.service-info {
+    padding: 10px;
+    /* Stops giant text from breaking the screen height */
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.service-info h1 {
+    font-size: clamp(24px, 4vw, 42px);
+    color: var(--primary-blue);
+    margin-bottom: 20px;
+}
+
+/* MOBILE FIX */
+@media (max-width: 768px) {
+    .service-detail-container {
+        grid-template-columns: 1fr;
+        padding: 20px;
+        gap: 30px;
+        height: auto;
+    }
+
+    .service-image-col {
+        max-height: 45vh; /* Limit height on mobile */
+        order: -1;
+        border-radius: 20px; /* Slightly less round on small screens */
+    }
+}
+
+/* =========================================
+   11. FOOTER
    ========================================= */
 footer { background-color: white; border-top: 1px solid var(--border-color); padding: 40px 0; margin-top: auto; }
 .footer-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; padding: 0 20px; }
 .newsletter { grid-column: 1 / -1; text-align: center; margin-top: 20px; }
 
 /* =========================================
-   10. MOBILE RESPONSIVE
+   12. GLOBAL MOBILE RESPONSIVE
    ========================================= */
 @media (max-width: 768px) {
     .header-container { flex-direction: column; height: auto; padding: 15px; gap: 15px; }
@@ -365,27 +587,190 @@ footer { background-color: white; border-top: 1px solid var(--border-color); pad
     .hero-container { height: 250px; }
     .prev, .next { display: none; }
     
-    /* Product Grid: 2 Columns */
-    .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 10px 0; }
+    .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 0px; }
     .product-image { height: 150px; }
     
-    /* Promo Section Mobile */
     .promo-bg { border-radius: 0; padding: 30px 10px; }
     
-    /* Services Grid: 2 Columns */
     .services-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
     
-    /* Instagram: 1 Column */
     .instagram-grid { grid-template-columns: 1fr; gap: 30px; }
     .insta-embed-wrapper { width: 100%; max-width: 100vw; }
     
-    /* Nav */
     .nav-container { justify-content: flex-start; }
 
-    /* Cart Mobile */
     .cart-container { grid-template-columns: 1fr; }
     .cart-item { flex-wrap: wrap; justify-content: space-between; }
     .cart-controls { order: 3; margin-top: 10px; }
     .cart-item-total { order: 4; margin-top: 10px; }
     .cart-item-image { width: 60px; height: 60px; }
+    
+    .order-footer { flex-direction: column; align-items: flex-start; gap: 15px; }
+    .order-actions { width: 100%; }
+    .primary-btn, .secondary-btn { flex: 1; text-align: center; }
+    
+    .pricing-card.featured { transform: scale(1); }
+}
+
+/* Back Button Style */
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    color: var(--primary-blue);
+    font-weight: 700;
+    font-family: "Fredoka", sans-serif;
+    cursor: pointer;
+    margin-bottom: 20px;
+    padding: 0;
+    transition: transform 0.2s;
+}
+
+.back-btn:hover {
+    transform: translateX(-5px); /* Subtle nudge to the left on hover */
+    color: #001f7a;
+}
+
+.back-button-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 60px; /* Spacing at the bottom of the page */
+    margin-top: 20px;
+}
+
+/* =========================================
+   13. PRICING PLANS (PLANO DE SAÚDE)
+   ========================================= */
+
+/* Header Text */
+.pricing-header {
+    text-align: center;
+    padding: 40px 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.pricing-header h2 {
+    color: var(--primary-blue);
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+.pricing-header p {
+    color: #666;
+    font-size: 18px;
+}
+
+/* The Grid Layout */
+.pricing-grid {
+    display: grid;
+    /* Create 3 equal columns */
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto 60px auto; /* Margin bottom for spacing before back button */
+    padding: 0 20px;
+    align-items: center; /* Vertically align cards */
+}
+
+/* Individual Cards */
+.pricing-card {
+    background: white;
+    border-radius: 20px;
+    padding: 40px 30px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    position: relative; /* Needed for the "Popular" badge positioning */
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+}
+
+.pricing-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+
+/* Specific styling for the Featured (Gold) Plan */
+.pricing-card.featured {
+    border: 2px solid var(--primary-blue);
+    transform: scale(1.05); /* Make it slightly larger */
+    box-shadow: 0 10px 25px rgba(0, 41, 166, 0.15);
+    z-index: 2; /* Ensure it sits on top */
+}
+
+.pricing-card.featured:hover {
+    transform: scale(1.08); /* Hover effect for featured card */
+}
+
+/* Typography inside cards */
+.plan-name {
+    display: block;
+    font-family: "Fredoka", sans-serif;
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.plan-price {
+    display: block;
+    font-family: "Fredoka", sans-serif;
+    font-size: 42px;
+    color: var(--primary-blue);
+    margin-bottom: 30px;
+}
+
+.plan-price span {
+    font-size: 16px;
+    color: #999;
+    font-weight: 400;
+}
+
+/* Features List */
+.plan-features {
+    list-style: none; /* Remove bullet points */
+    text-align: left;
+    margin-bottom: 30px;
+    flex-grow: 1; /* Pushes button to bottom */
+}
+
+.plan-features li {
+    padding: 10px 0;
+    border-bottom: 1px solid #f4f4f4;
+    font-size: 14px;
+    color: #555;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.plan-features li:last-child {
+    border-bottom: none;
+}
+
+.plan-features i {
+    color: #2ecc71; /* Green checkmarks */
+    width: 20px;
+    text-align: center;
+}
+
+/* Responsive Fix for Mobile */
+@media (max-width: 900px) {
+    .pricing-grid {
+        grid-template-columns: 1fr; /* Stack vertically on mobile */
+        max-width: 500px;
+        gap: 40px;
+    }
+
+    .pricing-card.featured {
+        transform: scale(1); /* Remove scaling on mobile */
+        order: -1; /* Optional: Put featured plan first on mobile */
+    }
+    
+    .pricing-card.featured:hover {
+        transform: translateY(-10px);
+    }
 }

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import Header from '../components/Header';
+import { useNavigate } from 'react-router-dom'; // 1. Import the hook
 import '../App.css'; // Ensure global styles are applied
 
 const Cart = () => {
+  const navigate = useNavigate(); // 2. Initialize the function
   // Mock State for Cart Items
   const [cartItems, setCartItems] = useState([
     {
@@ -47,7 +49,9 @@ const Cart = () => {
       <Header />
       <div className="cart-page">
         <h2 className="section-title">Meu Carrinho</h2>
-        
+        <button className="back-btn" onClick={() => navigate('/')}>
+          <i className="fas fa-arrow-left"></i> Voltar para o Início
+        </button>
         {cartItems.length === 0 ? (
           <div className="empty-cart">
             <i className="fas fa-shopping-basket"></i>

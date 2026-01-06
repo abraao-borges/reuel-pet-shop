@@ -24,7 +24,7 @@ const Header = () => {
             <span>Entrar</span>
           </div>
           
-          <div className="user-action-item">
+          <div className="user-action-item" onClick={() => navigate('/orders')}>
             <i className="fas fa-box"></i>
             <span>Pedidos</span>
           </div>
