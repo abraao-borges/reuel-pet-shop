@@ -1,1 +1,7 @@
 /home/abraaoborges/Development/Reuel Pet Shop/backend/src/main/java/com/reuelpet/reuelpet/ReuelpetApplication.java
+/home/abraaoborges/Development/Reuel Pet Shop/backend/src/main/java/com/reuelpet/reuelpet/config/DataSeeder.java
+/home/abraaoborges/Development/Reuel Pet Shop/backend/src/main/java/com/reuelpet/reuelpet/config/SecurityConfig.java
+/home/abraaoborges/Development/Reuel Pet Shop/backend/src/main/java/com/reuelpet/reuelpet/config/WebConfig.java
+/home/abraaoborges/Development/Reuel Pet Shop/backend/src/main/java/com/reuelpet/reuelpet/controller/ProductController.java
+/home/abraaoborges/Development/Reuel Pet Shop/backend/src/main/java/com/reuelpet/reuelpet/model/Product.java
+/home/abraaoborges/Development/Reuel Pet Shop/backend/src/main/java/com/reuelpet/reuelpet/repository/ProductRepository.java
