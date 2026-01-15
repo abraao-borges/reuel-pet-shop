@@ -15,9 +15,7 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const BACKEND_URL = import.meta.env.PROD 
-      ? "reuel-pet-shop.vercel.app"
-      : "https://reuel-pet-shop.onrender.com";
+    const BACKEND_URL = "https://reuel-pet-shop.onrender.com";
 
     fetch(`${BACKEND_URL}/api/products`)
       .then(response => {
@@ -25,6 +23,7 @@ const Home = () => {
         return response.json();
       })
       .then(data => {
+        console.log("Products loaded:", data); // Debugging log
         setProducts(data);
         setLoading(false);
       })
