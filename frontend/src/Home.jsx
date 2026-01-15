@@ -17,7 +17,7 @@ const Home = () => {
   useEffect(() => {
     const BACKEND_URL = import.meta.env.PROD 
       ? "reuel-pet-shop.vercel.app"
-      : "http://localhost:8080/api/products";
+      : "https://reuel-pet-shop.onrender.com";
 
     fetch(`${BACKEND_URL}/api/products`)
       .then(response => {
