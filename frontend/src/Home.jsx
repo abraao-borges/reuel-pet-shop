@@ -15,8 +15,11 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch from your Spring Boot API
-    fetch('http://localhost:8080/api/products')
+    const BACKEND_URL = import.meta.env.PROD 
+      ? "reuel-pet-shop.vercel.app"
+      : "http://localhost:8080/api/products";
+
+    fetch(`${BACKEND_URL}/api/products`)
       .then(response => {
         if (!response.ok) throw new Error('Network response was not ok');
         return response.json();
@@ -26,8 +29,8 @@ const Home = () => {
         setLoading(false);
       })
       .catch(error => {
-        console.error('Error connecting to Spring Boot:', error);
-        setLoading(false); // Stop loading so the UI doesn't hang
+        console.error('Error:', error);
+        setLoading(false);
       });
   }, []);
 
