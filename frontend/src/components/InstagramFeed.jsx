@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const InstagramFeed = () => {
-  // Add as many URLs as you want here. The grid will handle them automatically.
   const postUrls = [
     "https://www.instagram.com/p/DSc0d0gEQ5z/",
     "https://www.instagram.com/p/DSc0W3gkflt/",
@@ -11,11 +10,30 @@ const InstagramFeed = () => {
     "https://www.instagram.com/p/DS5En7okWBm/",
   ];
 
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    // Force Instagram to re-render embeds when component mounts
+    const BACKEND_URL = "https://reuel-pet-shop.onrender.com";
+
     if (window.instgrm) {
       window.instgrm.Embeds.process();
     }
+
+    fetch(`${BACKEND_URL}/api/instagram_links`)
+      .then(response => {
+        if (!response.ok) throw new Error('Resposta de rede não foi ok');
+        return response.json();
+      })
+      .then(data => {
+        console.log("Links do Instagram carregados:", data);
+        setPosts(data);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Erro:', error);
+        setLoading(false);
+      });
   }, []);
 
   return (
@@ -26,7 +44,7 @@ const InstagramFeed = () => {
         </h2>
         
         <div className="instagram-grid">
-          {postUrls.map((url, idx) => (
+          {posts.map((url, idx) => (
             <div key={idx} className="insta-embed-wrapper">
               <blockquote 
                 className="instagram-media" 
