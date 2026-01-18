@@ -1,40 +1,35 @@
 import React, { useEffect, useState } from 'react';
+import { BACKEND_URL } from '../apiConfig';
 
-const InstagramFeed = () => {
-  const postUrls = [
-    "https://www.instagram.com/p/DSc0d0gEQ5z/",
-    "https://www.instagram.com/p/DSc0W3gkflt/",
-    "https://www.instagram.com/p/DSc0GBlEffR/",
-    "https://www.instagram.com/p/DTJCci5kREw/",
-    "https://www.instagram.com/p/DS7O5BKkYzw/",
-    "https://www.instagram.com/p/DS5En7okWBm/",
-  ];
-
+const InstagramFeed = () => { // <--- This line was missing!
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const BACKEND_URL = "https://reuel-pet-shop.onrender.com";
-
-    if (window.instgrm) {
-      window.instgrm.Embeds.process();
-    }
-
+    // This part only runs once to fetch the data
     fetch(`${BACKEND_URL}/api/instagram_links`)
-      .then(response => {
-        if (!response.ok) throw new Error('Resposta de rede não foi ok');
-        return response.json();
-      })
+      .then(response => response.json())
       .then(data => {
-        console.log("Links do Instagram carregados:", data);
         setPosts(data);
         setLoading(false);
       })
-      .catch(error => {
-        console.error('Erro:', error);
-        setLoading(false);
-      });
+      .catch(error => console.error('Erro:', error));
   }, []);
+
+  // NEW: This useEffect runs every time 'posts' changes
+  useEffect(() => {
+    if (!loading && posts.length > 0) {
+      if (window.instgrm) {
+        // This tells Instagram to turn the <blockquote> into a real post
+        window.instgrm.Embeds.process();
+      } else {
+        // If the script hasn't loaded yet, we can't process
+        console.warn("Instagram embed script not found.");
+      }
+    }
+  }, [posts, loading]); // Dependency array: run when these change
+
+  if (loading) return null; // Optional: hide section while loading
 
   return (
     <section className="instagram-section">
@@ -59,6 +54,6 @@ const InstagramFeed = () => {
       </div>
     </section>
   );
-};
+}; // <--- Don't forget to close the function!
 
 export default InstagramFeed;

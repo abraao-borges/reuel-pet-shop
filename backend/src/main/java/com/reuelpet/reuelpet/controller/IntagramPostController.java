@@ -17,7 +17,10 @@ public class IntagramPostController {
     private InstagramPostRepository instagramPostRepository;
 
     @GetMapping
-    public List<InstagramPost> getAllProducts() {
-        return instagramPostRepository.findAll();
+    public List<String> getAllLinks() {
+        return instagramPostRepository.findAll()
+                .stream()
+                .map(InstagramPost::getLink)
+                .toList();
     }
 }

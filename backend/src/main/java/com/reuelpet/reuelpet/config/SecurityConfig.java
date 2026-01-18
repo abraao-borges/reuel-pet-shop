@@ -11,10 +11,15 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable()) // Disable CSRF for development
-            .cors(cors -> {}) // Enable CORS (uses your WebConfig)
+            .csrf(csrf -> csrf.disable())
+            .cors(org.springframework.security.config.Customizer.withDefaults()) 
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/**").permitAll() // Allow everyone to see products
+                // Allow preflight requests for all endpoints
+                .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
+                // Your API endpoints
+                .requestMatchers("/api/**").permitAll()
+                // Allow the internal error path so you see real status codes (404, 500)
+                .requestMatchers("/error").permitAll()
                 .anyRequest().authenticated()
             );
         
