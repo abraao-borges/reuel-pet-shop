@@ -105,15 +105,12 @@ nav { background-color: white; border-bottom: 1px solid var(--border-color); }
    ========================================= */
 .hero-container {
     width: 100%;
-    height: 400px;
     position: relative;
-    overflow: hidden;
 }
 
 .carousel-scroll-wrapper {
     display: flex;
     width: 100%;
-    height: 100%;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
@@ -123,10 +120,14 @@ nav { background-color: white; border-bottom: 1px solid var(--border-color); }
 
 .slide {
     flex: 0 0 100%;
-    height: 100%;
+    width: 100%;
     scroll-snap-align: start;
-    background-size: cover;
-    background-position: center;
+}
+
+.slide-img {
+    width: 100%;
+    height: auto;
+    display: block;
 }
 
 .prev, .next {
@@ -144,27 +145,33 @@ nav { background-color: white; border-bottom: 1px solid var(--border-color); }
 .next { right: 15px; }
 .prev { left: 15px; }
 
+@media (max-width: 768px) {
+    .slide {
+        display: block;
+    }
+}
+
+
 /* =========================================
    4. HOME LAYOUT & SECTIONS
    ========================================= */
-.section-container { 
-    max-width: 1200px; 
-    margin: 0 auto; 
-    padding: 10px; 
+/* 1. Remove the top padding from the container */
+.section-container.services-section {
+    padding-top: 0;
+    margin-top: 0;
+    margin-inline: 10px;
 }
 
-.section-title { 
-    font-size: 24px; 
-    margin-bottom: 15px; 
-    color: #333; 
-    margin-top: 0; 
+/* 2. Remove the browser's default top margin from the title */
+.services-section .section-title {
+    margin-top: 0;
+    padding-top: 20px; /* Use padding if you want a small gap, or 0 for none */
 }
 
-/* Services Section (Top Margin Fix) */
-.services-section {
-    margin-top: 20px; /* Added spacing from Hero */
-    margin-bottom: 40px;
-    padding: 0 20px;
+/* 3. Ensure the hero container doesn't have extra "line-height" space */
+.hero-container {
+    line-height: 0;
+    display: block;
 }
 
 .services-grid { 
@@ -584,7 +591,6 @@ footer { background-color: white; border-top: 1px solid var(--border-color); pad
     .header-container { flex-direction: column; height: auto; padding: 15px; gap: 15px; }
     .search-bar { width: 100%; margin: 0; }
     
-    .hero-container { height: 250px; }
     .prev, .next { display: none; }
     
     .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 0px; }

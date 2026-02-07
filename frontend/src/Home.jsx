@@ -39,7 +39,6 @@ const Home = () => {
 
   const services = [
     { title: "Banho e Tosa", desc: "Deixe seu pet cheiroso e estiloso.", icon: "fas fa-shower", path: "/banho-tosa" },
-    { title: "Corte de Unhas", desc: "Cuidado e higiene para as patinhas.", icon: "fas fa-paw", path: "/corte-unhas" },
     { title: "Veterinário", desc: "Consultas e vacinação em dia.", icon: "fas fa-user-md", path: "/veterinario" },
     { title: "Plano de Saúde", desc: "A melhor proteção para seu amigo.", icon: "fas fa-heart", path: "/plano-saude" }
   ];

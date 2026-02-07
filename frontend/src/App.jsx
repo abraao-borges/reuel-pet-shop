@@ -5,7 +5,6 @@ import Login from './pages/Login';
 import Orders from './pages/Pedidos';
 import Cart from './pages/Cart';
 import BanhoTosa from './pages/BanhoTosa';
-import CorteUnhas from './pages/CorteUnhas';
 import PlanoSaude from './pages/PlanoSaude';
 import Veterinario from './pages/Veterianio';
 
@@ -20,7 +19,6 @@ function App() {
         
         {/* Service Routes */}
         <Route path="/banho-tosa" element={<BanhoTosa />} />
-        <Route path="/corte-unhas" element={<CorteUnhas />} />
         <Route path="/veterinario" element={<Veterinario />} />
         <Route path="/plano-saude" element={<PlanoSaude />} />
       </Routes>
