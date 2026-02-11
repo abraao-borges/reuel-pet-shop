@@ -1,15 +1,18 @@
 services:
-  db:
-    image: postgres:16-alpine
-    container_name: reuel_pet_db
-    environment:
-      POSTGRES_USER: petuser
-      POSTGRES_PASSWORD: petpassword
-      POSTGRES_DB: reuel_pet_shop
+  app:
+    build: ./backend
+    container_name: reuel_pet_app
     ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://dpg-d5kh2bur433s73ereapg-a.oregon-postgres.render.com/reuel_pet_shop_postgres_database
+      - SPRING_DATASOURCE_USERNAME=reuel_pet_shop_postgres_database_user
+      - SPRING_DATASOURCE_PASSWORD=3NKXP5udgM2CabGYkfCTTVCNHEmlNbAx
 
-volumes:
-  postgres_data:
+  frontend:
+    build: ./frontend
+    container_name: reuel_pet_frontend
+    ports:
+      - "3000:80"  # Maps your local port 3000 to Nginx port 80
+    depends_on:
+      - app

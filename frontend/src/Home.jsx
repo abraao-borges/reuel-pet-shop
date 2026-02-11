@@ -9,14 +9,13 @@ import HeroCarousel from './components/HeroCarousel';
 import ProductCard from './components/ProductCard';
 import ServiceCard from './components/ServiceCard';
 import InstagramFeed from './components/InstagramFeed';
+import { BACKEND_URL } from './apiConfig';
 
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const BACKEND_URL = "https://reuel-pet-shop.onrender.com";
-
     fetch(`${BACKEND_URL}/api/products`)
       .then(response => {
         if (!response.ok) throw new Error('Network response was not ok');
