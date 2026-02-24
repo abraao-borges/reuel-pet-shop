@@ -35,8 +35,8 @@ const BanhoTosa = () => {
             <div className="price-row"><span>Tosa Completa (Tesoura/Máquina)</span> <strong>A partir de R$ 80,00</strong></div>
           </div>
 
-          <div style={{display:'flex', gap:'15px'}}>
-            <button className="service-btn" style={{flex:1, padding: '15px'}}>Agendar pelo WhatsApp</button>
+          <div className="service-actions">
+            <button className="service-btn">Agendar pelo WhatsApp</button>
           </div>
         </div>
       </div>

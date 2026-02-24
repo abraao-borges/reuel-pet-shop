@@ -1,21 +1,21 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './Home';
-import Login from './pages/Login';
 import Orders from './pages/Pedidos';
 import Cart from './pages/Cart';
 import BanhoTosa from './pages/BanhoTosa';
 import PlanoSaude from './pages/PlanoSaude';
 import Veterinario from './pages/Veterianio';
+import Completion from './pages/Completion';
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/completion" element={<Completion />} />
         
         {/* Service Routes */}
         <Route path="/banho-tosa" element={<BanhoTosa />} />

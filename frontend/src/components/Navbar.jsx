@@ -1,13 +1,18 @@
-// Navbar.jsx
-const Navbar = () => {
-  const categories = ['Cachorro', 'Gato', 'Pássaros', 'Peixes', 'Outros Pets', 'Marcas', 'Promoções', 'Plano de Saúde'];
+import { PET_SPECIES_OPTIONS } from "../constants/petSpecies";
+
+const Navbar = ({ selectedSpecies = "ALL", onSpeciesChange }) => {
   return (
     <nav className="nav">
       <div className="nav-container">
-        {categories.map((cat, idx) => (
-          <div key={idx} className="nav-item" style={cat === 'Promoções' ? { color: 'red' } : {}}>
-            {cat}
-          </div>
+        {PET_SPECIES_OPTIONS.map((species) => (
+          <button
+            key={species.value}
+            className={`nav-item ${selectedSpecies === species.value ? "active" : ""}`}
+            onClick={() => onSpeciesChange?.(species.value)}
+            type="button"
+          >
+            {species.label}
+          </button>
         ))}
       </div>
     </nav>

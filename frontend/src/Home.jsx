@@ -6,32 +6,57 @@ import './App.css';
 import Header from './components/Header';
 import Navbar from './components/Navbar';
 import HeroCarousel from './components/HeroCarousel';
-import ProductCard from './components/ProductCard';
 import ServiceCard from './components/ServiceCard';
 import InstagramFeed from './components/InstagramFeed';
+import Toast from './components/Toast';
+import ProductSection from './components/ProductSection';
+import { fetchProducts } from './api/productsApi';
 
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [toast, setToast] = useState({ message: '', visible: false });
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedSpecies, setSelectedSpecies] = useState('ALL');
+
+  const showToast = (message) => {
+    setToast({ message, visible: true });
+    window.setTimeout(() => {
+      setToast({ message: '', visible: false });
+    }, 1800);
+  };
 
   useEffect(() => {
-    const BACKEND_URL = "https://reuel-pet-shop.onrender.com";
+    const timeoutId = window.setTimeout(() => {
+      setLoading(true);
 
-    fetch(`${BACKEND_URL}/api/products`)
-      .then(response => {
-        if (!response.ok) throw new Error('Network response was not ok');
-        return response.json();
-      })
-      .then(data => {
-        console.log("Products loaded:", data); // Debugging log
-        setProducts(data);
-        setLoading(false);
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        setLoading(false);
-      });
-  }, []);
+      fetchProducts({ query: searchTerm, petSpecies: selectedSpecies })
+        .then((data) => {
+          setProducts(data);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+          setLoading(false);
+        });
+    }, 250);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [searchTerm, selectedSpecies]);
+
+  const addToCart = (product) => {
+    const existingCart = JSON.parse(localStorage.getItem('cart')) || [];
+    const itemIndex = existingCart.findIndex(item => item.id === product.id);
+
+    if (itemIndex > -1) {
+      existingCart[itemIndex].quantity += 1;
+    } else {
+      existingCart.push({ ...product, quantity: 1 });
+    }
+
+    localStorage.setItem('cart', JSON.stringify(existingCart));
+    showToast(`${product.title} foi para o seu carrinho! 🐾`);
+  };
 
   // Filter products based on the 'category' field we set in Java
   const promoProducts = products.filter(p => p.category === 'PROMO');
@@ -46,16 +71,15 @@ const Home = () => {
   if (loading) {
     return (
       <div className="loading-screen" style={{ textAlign: 'center', marginTop: '50px' }}>
-        <h2>Carregando ofertas do ReuelPet...</h2>
-        <p>Verifique se o backend está rodando na porta 8080</p>
+        <h2>Carregando web site Reuel Pet Shop...</h2>
       </div>
     );
   }
 
   return (
     <>
-      <Header />
-      <Navbar />
+      <Header searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+      <Navbar selectedSpecies={selectedSpecies} onSpeciesChange={setSelectedSpecies} />
       <HeroCarousel />
       
       <main>
@@ -76,31 +100,29 @@ const Home = () => {
         </section>
 
         {/* --- SECTION 2: PROMOTIONS --- */}
-        <section className="section-container promo-bg">
-          <h2 className="section-title" style={{color: '#ffffff'}}>🔥 Ofertas Relâmpago</h2>
-          <div className="product-grid">
-            {promoProducts.length > 0 ? (
-              promoProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))
-            ) : <p style={{color: 'white'}}>Nenhuma oferta encontrada.</p>}
-          </div>
-        </section>
+        <ProductSection
+          className="section-container promo-bg"
+          title="🔥 Ofertas Relâmpago"
+          titleStyle={{ color: '#ffffff' }}
+          products={promoProducts}
+          onAddToCart={addToCart}
+          emptyMessage="Nenhuma oferta encontrada para este filtro."
+          darkPager
+        />
 
         {/* --- SECTION 3: RECOMMENDED --- */}
-        <section className="section-container">
-          <h2 className="section-title">Recomendados para Você</h2>
-          <div className="product-grid">
-            {recommendedProducts.length > 0 ? (
-              recommendedProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))
-            ) : <p>Carregando recomendações...</p>}
-          </div>
-        </section>
+        <ProductSection
+          className="section-container"
+          title="Recomendados para Você"
+          products={recommendedProducts}
+          onAddToCart={addToCart}
+          emptyMessage="Nenhum produto recomendado encontrado para este filtro."
+        />
 
         <InstagramFeed />
       </main>
+
+      <Toast message={toast.message} visible={toast.visible} />
     </>
   );
 };

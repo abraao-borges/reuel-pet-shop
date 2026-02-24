@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom'; // 1. Import the hook
 import Header from '../components/Header';
@@ -6,6 +6,19 @@ import '../App.css';
 
 const Orders = () => {
   const navigate = useNavigate(); // 2. Initialize the function
+  const [openOrderIds, setOpenOrderIds] = useState([]);
+
+  const toggleOrderDetails = (orderId) => {
+    setOpenOrderIds((prev) =>
+      prev.includes(orderId)
+        ? prev.filter((id) => id !== orderId)
+        : [...prev, orderId],
+    );
+  };
+
+  const handleBuyAgain = () => {
+    navigate('/');
+  };
   // Mock Data for Orders
   const orders = [
     {
@@ -105,12 +118,24 @@ const Orders = () => {
                       <strong>R$ {order.total.toFixed(2)}</strong>
                     </div>
                     <div className="order-actions">
-                      <button className="secondary-btn">Detalhes</button>
-                      <button className="primary-btn">
+                      <button
+                        className="secondary-btn"
+                        onClick={() => toggleOrderDetails(order.id)}
+                      >
+                        {openOrderIds.includes(order.id) ? 'Ocultar' : 'Detalhes'}
+                      </button>
+                      <button className="primary-btn" onClick={handleBuyAgain}>
                         <i className="fas fa-redo"></i> Comprar Novamente
                       </button>
                     </div>
                   </div>
+
+                  {openOrderIds.includes(order.id) && (
+                    <div className="order-extra-details">
+                      <p><strong>Pagamento:</strong> {order.paymentMethod}</p>
+                      <p><strong>Data do pedido:</strong> {order.date}</p>
+                    </div>
+                  )}
 
                 </div>
               ))}

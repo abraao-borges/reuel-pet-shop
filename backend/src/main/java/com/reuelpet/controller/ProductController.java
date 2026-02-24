@@ -1,10 +1,11 @@
 package com.reuelpet.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.reuelpet.model.Product;
-import com.reuelpet.repository.ProductRepository;
+import com.reuelpet.model.enums.PetSpecies;
+import com.reuelpet.model.enums.ProductCategory;
+import com.reuelpet.service.ProductService;
 
 import java.util.List;
 
@@ -13,11 +14,18 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000") // Allow React to access this
 public class ProductController {
 
-    @Autowired
-    private ProductRepository productRepository;
+    private final ProductService productService;
+
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
 
     @GetMapping
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<Product> getProducts(
+        @RequestParam(required = false) String query,
+        @RequestParam(required = false) PetSpecies petSpecies,
+        @RequestParam(required = false) ProductCategory category
+    ) {
+        return productService.searchProducts(query, petSpecies, category);
     }
 }

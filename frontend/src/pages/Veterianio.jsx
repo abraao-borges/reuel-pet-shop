@@ -25,9 +25,11 @@ const Veterinario = () => {
             <div className="price-row"><span>Microchipagem</span> <strong>R$ 150,00</strong></div>
           </div>
 
-          <button className="service-btn" style={{background:'#d32f2f', width:'100%', padding: '15px'}}>
-            <i className="fas fa-ambulance"></i> Plantão de Emergência (Ligar)
-          </button>
+          <div className="service-actions">
+            <button className="service-btn service-btn-danger">
+              <i className="fas fa-ambulance"></i> Plantão de Emergência (Ligar)
+            </button>
+          </div>
         </div>
 
         <div className="service-image-col">
