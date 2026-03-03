@@ -7,6 +7,7 @@ import BanhoTosa from './pages/BanhoTosa';
 import PlanoSaude from './pages/PlanoSaude';
 import Veterinario from './pages/Veterianio';
 import Completion from './pages/Completion';
+import OwnerAdmin from './pages/OwnerAdmin';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/orders" element={<Orders />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/completion" element={<Completion />} />
+        <Route path="/owner" element={<OwnerAdmin />} />
         
         {/* Service Routes */}
         <Route path="/banho-tosa" element={<BanhoTosa />} />

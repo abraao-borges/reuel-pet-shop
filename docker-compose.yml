@@ -4,6 +4,8 @@ services:
     container_name: reuel_pet_app
     ports:
       - "8080:8080"
+    volumes:
+      - backend_data:/app/data
     environment:
       # dev / prod
       - SPRING_PROFILES_ACTIVE=dev
@@ -15,3 +17,6 @@ services:
       - "3000:80"
     depends_on:
       - app
+
+volumes:
+  backend_data:

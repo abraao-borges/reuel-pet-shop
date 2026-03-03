@@ -32,6 +32,8 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private PetSpecies petSpecies;
 
+    private Integer sortOrder;
+
     private Integer stockQuantity;
     
 }

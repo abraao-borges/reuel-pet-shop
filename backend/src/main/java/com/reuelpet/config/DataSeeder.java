@@ -1,6 +1,7 @@
 package com.reuelpet.config;
 
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,17 +12,19 @@ import com.reuelpet.repository.ProductRepository;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Configuration
 public class DataSeeder {
 
     @Bean
+    @ConditionalOnProperty(name = "app.seed.products", havingValue = "true")
     CommandLineRunner initDatabase(ProductRepository repository) {
         return args -> {
+            if (repository.count() > 0) {
+                return;
+            }
+
             List<Product> products = new ArrayList<>();
 
             products.addAll(List.of(
@@ -52,19 +55,12 @@ public class DataSeeder {
                 product("Arranhador Compacto para Gatos", "89.90", "75.90", "/images/pet_toy_2.png", ProductCategory.RECOMMENDED, PetSpecies.CAT, 16)
             ));
 
-            Map<String, Product> existingByTitle = repository.findAll().stream()
-                .collect(Collectors.toMap(Product::getTitle, existing -> existing, (first, second) -> first));
+            for (int index = 0; index < products.size(); index++) {
+                products.get(index).setSortOrder(index + 1);
+            }
 
-            List<Product> productsToSave = products.stream().map(seedProduct -> {
-                Product existing = existingByTitle.get(seedProduct.getTitle());
-                if (existing != null) {
-                    seedProduct.setId(existing.getId());
-                }
-                return seedProduct;
-            }).toList();
-
-            repository.saveAll(Objects.requireNonNull(productsToSave));
-            System.out.println("✅ Product seed synchronized with local images and latest metadata.");
+            repository.saveAll(products);
+            System.out.println("✅ Initial product seed loaded.");
         };
     }
 
@@ -85,6 +81,7 @@ public class DataSeeder {
             image,
             category,
             petSpecies,
+            null,
             stockQuantity
         );
     }

@@ -14,6 +14,8 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
+    List<Product> findAllByOrderBySortOrderAscIdAsc();
+
 	@Query("""
 		SELECT p
 		FROM Product p
@@ -24,7 +26,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 				OR p.petSpecies = :petSpecies
 				OR p.petSpecies = com.reuelpet.model.enums.PetSpecies.ALL
 			  )
-		ORDER BY p.id DESC
+		ORDER BY p.sortOrder ASC, p.id ASC
 	""")
 	List<Product> search(
 		@Param("query") String query,
