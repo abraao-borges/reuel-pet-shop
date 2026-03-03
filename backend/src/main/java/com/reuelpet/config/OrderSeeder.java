@@ -3,6 +3,7 @@ package com.reuelpet.config;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -30,7 +31,8 @@ public class OrderSeeder {
                 new CustomerOrder(null, "#75001", "Lucas Andrade", new BigDecimal("85.00"), LocalDateTime.now().minusDays(30), OrderStatus.CANCELED)
             );
 
-            orderRepository.saveAll(initialOrders);
+            Iterable<CustomerOrder> safeInitialOrders = Objects.requireNonNull(initialOrders);
+            orderRepository.saveAll(safeInitialOrders);
         };
     }
 }
