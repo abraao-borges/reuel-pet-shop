@@ -8,9 +8,13 @@ import Navbar from './components/Navbar';
 import HeroCarousel from './components/HeroCarousel';
 import ServiceCard from './components/ServiceCard';
 import InstagramFeed from './components/InstagramFeed';
+<<<<<<< HEAD
 import Toast from './components/Toast';
 import ProductSection from './components/ProductSection';
 import { fetchProducts } from './api/productsApi';
+=======
+import { BACKEND_URL } from './apiConfig';
+>>>>>>> 739cb3c92d2a76f75b505a5e38170b8f83d81a56
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -27,6 +31,7 @@ const Home = () => {
   };
 
   useEffect(() => {
+<<<<<<< HEAD
     const timeoutId = window.setTimeout(() => {
       setLoading(true);
 
@@ -57,6 +62,23 @@ const Home = () => {
     localStorage.setItem('cart', JSON.stringify(existingCart));
     showToast(`${product.title} foi para o seu carrinho! 🐾`);
   };
+=======
+    fetch(`${BACKEND_URL}/api/products`)
+      .then(response => {
+        if (!response.ok) throw new Error('Network response was not ok');
+        return response.json();
+      })
+      .then(data => {
+        console.log("Products loaded:", data); // Debugging log
+        setProducts(data);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        setLoading(false);
+      });
+  }, []);
+>>>>>>> 739cb3c92d2a76f75b505a5e38170b8f83d81a56
 
   // Filter products based on the 'category' field we set in Java
   const promoProducts = products.filter(p => p.category === 'PROMO');

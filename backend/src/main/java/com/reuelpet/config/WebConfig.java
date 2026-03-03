@@ -10,9 +10,14 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins(
+<<<<<<< HEAD:backend/src/main/java/com/reuelpet/config/WebConfig.java
                     "http://localhost:3000",
                     "http://localhost:5173", 
                     "https://reuel-pet-shop.vercel.app" // ADD YOUR VERCEL DOMAIN HERE
+=======
+                    "http://localhost:3000", 
+                    "https://reuel-pet-shop.vercel.app"
+>>>>>>> 739cb3c92d2a76f75b505a5e38170b8f83d81a56:backend/src/main/java/com/reuelpet/reuelpet/config/WebConfig.java
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
