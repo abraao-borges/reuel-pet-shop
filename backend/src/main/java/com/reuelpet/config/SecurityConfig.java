@@ -53,6 +53,7 @@ public class SecurityConfig {
                 .requestMatchers(new AntPathRequestMatcher("/api/admin/**")).hasRole("OWNER")
                 .requestMatchers(new AntPathRequestMatcher("/api/payment/**")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/api/products/**")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/api/orders/**")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
                 .anyRequest().authenticated()
             )

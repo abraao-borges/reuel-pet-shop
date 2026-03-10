@@ -1,12 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom'; // 1. Import the hook
 import Header from '../components/Header';
+import { fetchOrders } from '../api/ordersApi';
 import '../App.css';
 
 const Orders = () => {
   const navigate = useNavigate(); // 2. Initialize the function
   const [openOrderIds, setOpenOrderIds] = useState([]);
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchOrders()
+      .then((data) => {
+        setOrders(data || []);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error('Failed to load orders:', error);
+        setOrders([]);
+        setLoading(false);
+      });
+  }, []);
 
   const toggleOrderDetails = (orderId) => {
     setOpenOrderIds((prev) =>
@@ -19,50 +35,51 @@ const Orders = () => {
   const handleBuyAgain = () => {
     navigate('/');
   };
-  // Mock Data for Orders
-  const orders = [
-    {
-      id: "#98214",
-      date: "04 Jan, 2026",
-      status: "Em Trânsito",
-      total: 189.80,
-      paymentMethod: "Pix",
-      items: [
-        { name: "Ração Golden Special 15kg", image: "/images/racao_4.png", qty: 1, price: 149.90 },
-        { name: "Brinquedo Mordedor", image: "/images/pet_toy_1.png", qty: 1, price: 39.90 }
-      ]
-    },
-    {
-      id: "#88102",
-      date: "20 Dez, 2025",
-      status: "Entregue",
-      total: 39.90,
-      paymentMethod: "Cartão de Crédito",
-      items: [
-        { name: "Tigela de Ração", image: "/images/pet-food-in-bowl-png.png", qty: 1, price: 39.90 }
-      ]
-    },
-    {
-      id: "#75001",
-      date: "15 Nov, 2025",
-      status: "Cancelado",
-      total: 85.00,
-      paymentMethod: "Boleto",
-      items: [
-        { name: "Shampoo Pet Clean", image: "/images/pet_higiene_1.jpg", qty: 2, price: 42.50 }
-      ]
-    }
-  ];
-
   // Helper to determine status color
   const getStatusClass = (status) => {
     switch (status) {
-      case 'Entregue': return 'status-delivered';
-      case 'Em Trânsito': return 'status-transit';
-      case 'Cancelado': return 'status-cancelled';
+      case 'DELIVERED': return 'status-delivered';
+      case 'IN_TRANSIT': return 'status-transit';
+      case 'CANCELED': return 'status-cancelled';
       default: return '';
     }
   };
+
+  const getStatusLabel = (status) => {
+    switch (status) {
+      case 'CREATED': return 'Criado';
+      case 'PREPARING': return 'Preparando';
+      case 'IN_TRANSIT': return 'Em Trânsito';
+      case 'DELIVERED': return 'Entregue';
+      case 'CANCELED': return 'Cancelado';
+      default: return status;
+    }
+  };
+
+  const formatDate = (value) => {
+    if (!value) return '';
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return value;
+    return date.toLocaleDateString('pt-BR', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    });
+  };
+
+  if (loading) {
+    return (
+      <>
+        <Header />
+        <div className="page-container">
+          <div className="orders-wrapper">
+            <h2 className="section-title">Meus Pedidos</h2>
+            <p>Carregando pedidos...</p>
+          </div>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
@@ -89,24 +106,20 @@ const Orders = () => {
                   <div className="order-header">
                     <div>
                       <span className="order-id">Pedido {order.id}</span>
-                      <span className="order-date">{order.date}</span>
+                      <span className="order-date">{formatDate(order.createdAt)}</span>
                     </div>
                     <span className={`order-status ${getStatusClass(order.status)}`}>
-                      {order.status}
+                      {getStatusLabel(order.status)}
                     </span>
                   </div>
 
-                  {/* Order Items */}
                   <div className="order-items">
-                    {order.items.map((item, index) => (
-                      <div key={index} className="order-item-row">
-                        <img src={item.image} alt={item.name} className="order-thumb" />
-                        <div className="order-item-details">
-                          <h4>{item.name}</h4>
-                          <p>Qtd: {item.qty} x R$ {item.price.toFixed(2)}</p>
-                        </div>
+                    <div className="order-item-row">
+                      <div className="order-item-details">
+                        <h4>{order.customerName || 'Cliente'}</h4>
+                        <p>Status atual: {getStatusLabel(order.status)}</p>
                       </div>
-                    ))}
+                    </div>
                   </div>
 
                   <hr className="divider" />
@@ -115,7 +128,7 @@ const Orders = () => {
                   <div className="order-footer">
                     <div className="order-total">
                       <span>Total:</span>
-                      <strong>R$ {order.total.toFixed(2)}</strong>
+                      <strong>R$ {Number(order.totalAmount || 0).toFixed(2)}</strong>
                     </div>
                     <div className="order-actions">
                       <button
@@ -132,8 +145,8 @@ const Orders = () => {
 
                   {openOrderIds.includes(order.id) && (
                     <div className="order-extra-details">
-                      <p><strong>Pagamento:</strong> {order.paymentMethod}</p>
-                      <p><strong>Data do pedido:</strong> {order.date}</p>
+                      <p><strong>Código:</strong> {order.orderCode}</p>
+                      <p><strong>Data do pedido:</strong> {formatDate(order.createdAt)}</p>
                     </div>
                   )}
 
