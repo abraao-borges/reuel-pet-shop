@@ -59,7 +59,13 @@ public class PaymentController {
             request.getCompletionUrl()
         );
 
-        customerOrderService.createOrderFromCheckout(products, quantityMap, request.getCustomer());
+        customerOrderService.createOrderFromCheckout(
+            products, 
+            quantityMap, 
+            request.getCustomer(),
+            request.getDeliveryAddress(),
+            request.getPaymentMethod()
+        );
         
         return ResponseEntity.ok(Map.of("url", checkoutUrl));
     }
@@ -73,6 +79,8 @@ class CheckoutRequest {
     private String returnUrl;
     private String completionUrl;
     private AbacatePayCustomerDTO customer;
+    private String deliveryAddress;
+    private String paymentMethod;
 }
 
 @Data

@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 import com.reuelpet.model.enums.OrderStatus;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -31,10 +32,22 @@ public class CustomerOrder {
 
     private String customerName;
 
+    private String customerPhone;
+
+    private String customerEmail;
+
+    private String deliveryAddress;
+
+    private String paymentMethod;
+
     private BigDecimal totalAmount;
 
     private LocalDateTime createdAt;
 
+    @Column(columnDefinition = "TEXT")
+    private String itemsJson; // Store order items as JSON for display
+
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 }
+

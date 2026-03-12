@@ -13,6 +13,8 @@ const Cart = () => {
     email: "",
     taxId: "",
   });
+  const [deliveryAddress, setDeliveryAddress] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("PIX");
 
   // Load items from LocalStorage on mount
   useEffect(() => {
@@ -79,9 +81,10 @@ const Cart = () => {
       !customer.name.trim() ||
       !customer.cellphone.trim() ||
       !customer.email.trim() ||
-      !customer.taxId.trim()
+      !customer.taxId.trim() ||
+      !deliveryAddress.trim()
     ) {
-      alert("Preencha nome, celular, email e ID antes de finalizar.");
+      alert("Preencha todos os campos obrigatórios.");
       return;
     }
 
@@ -99,6 +102,8 @@ const Cart = () => {
       returnUrl: `${frontendOrigin}/cart`,
       completionUrl: `${frontendOrigin}/completion`,
       customer,
+      deliveryAddress,
+      paymentMethod,
     };
 
     try {
@@ -248,10 +253,24 @@ const Cart = () => {
                 />
                 <input
                   type="text"
-                  placeholder="ID"
+                  placeholder="ID / CPF"
                   value={customer.taxId}
                   onChange={(e) => updateCustomerField("taxId", e.target.value)}
                 />
+                <textarea
+                  placeholder="Endereço de Entrega"
+                  value={deliveryAddress}
+                  onChange={(e) => setDeliveryAddress(e.target.value)}
+                  style={{ minHeight: '80px', fontFamily: 'inherit' }}
+                />
+                <select
+                  value={paymentMethod}
+                  onChange={(e) => setPaymentMethod(e.target.value)}
+                >
+                  <option value="PIX">PIX</option>
+                  <option value="CREDIT_CARD">Cartão de Crédito</option>
+                  <option value="DEBIT_CARD">Cartão de Débito</option>
+                </select>
               </div>
 
               <button

@@ -26,9 +26,9 @@ public class OrderSeeder {
             }
 
             List<CustomerOrder> initialOrders = List.of(
-                new CustomerOrder(null, "#98214", "Carlos Silva", new BigDecimal("189.80"), LocalDateTime.now().minusDays(2), OrderStatus.IN_TRANSIT),
-                new CustomerOrder(null, "#88102", "Mariana Souza", new BigDecimal("39.90"), LocalDateTime.now().minusDays(15), OrderStatus.DELIVERED),
-                new CustomerOrder(null, "#75001", "Lucas Andrade", new BigDecimal("85.00"), LocalDateTime.now().minusDays(30), OrderStatus.CANCELED)
+                new CustomerOrder(null, "#98214", "Carlos Silva", "11987654321", "carlos@email.com", "Rua A, 123, São Paulo", "PIX", new BigDecimal("189.80"), LocalDateTime.now().minusDays(2), "[]", OrderStatus.IN_TRANSIT),
+                new CustomerOrder(null, "#88102", "Mariana Souza", "21998765432", "mariana@email.com", "Avença B, 456, Rio de Janeiro", "CREDIT_CARD", new BigDecimal("39.90"), LocalDateTime.now().minusDays(15), "[]", OrderStatus.DELIVERED),
+                new CustomerOrder(null, "#75001", "Lucas Andrade", "85987654321", "lucas@email.com", "Rua C, 789, Ceará", "PIX", new BigDecimal("85.00"), LocalDateTime.now().minusDays(30), "[]", OrderStatus.CANCELED)
             );
 
             Iterable<CustomerOrder> safeInitialOrders = Objects.requireNonNull(initialOrders);

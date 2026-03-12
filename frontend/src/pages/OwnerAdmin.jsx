@@ -19,7 +19,7 @@ const initialProductForm = {
   subscriberPrice: '',
   image: '',
   category: 'PROMO',
-  petSpecies: 'DOG',
+  petSpecies: [],
   stockQuantity: 0,
 };
 
@@ -160,7 +160,7 @@ const OwnerAdmin = () => {
       subscriberPrice: product.subscriberPrice,
       image: product.image,
       category: product.category,
-      petSpecies: product.petSpecies,
+      petSpecies: Array.isArray(product.petSpecies) ? product.petSpecies : [product.petSpecies],
       stockQuantity: product.stockQuantity,
     });
   };
@@ -282,67 +282,133 @@ const OwnerAdmin = () => {
               <section className="admin-card">
                 <h2>{editingId ? 'Editar Produto' : 'Novo Produto'}</h2>
                 <form className="admin-form" onSubmit={saveProduct}>
-                  <input
-                    value={form.title}
-                    onChange={(event) => setForm({ ...form, title: event.target.value })}
-                    placeholder="Título"
-                    required
-                  />
-                  <input
-                    type="number"
-                    min="0"
-                    step="0.01"
-                    value={form.price}
-                    onChange={(event) => setForm({ ...form, price: event.target.value })}
-                    placeholder="Preço"
-                    required
-                  />
-                  <input
-                    type="number"
-                    min="0"
-                    step="0.01"
-                    value={form.subscriberPrice}
-                    onChange={(event) => setForm({ ...form, subscriberPrice: event.target.value })}
-                    placeholder="Preço assinante"
-                    required
-                  />
-                  <input
-                    value={form.image}
-                    onChange={(event) => setForm({ ...form, image: event.target.value })}
-                    placeholder="Imagem (/images/exemplo.png)"
-                    required
-                  />
+                  <div>
+                    <label style={{ fontSize: '14px', fontWeight: '600', color: '#333', marginBottom: '6px', display: 'block' }}>Título</label>
+                    <input
+                      value={form.title}
+                      onChange={(event) => setForm({ ...form, title: event.target.value })}
+                      required
+                    />
+                  </div>
 
-                  <select
-                    value={form.category}
-                    onChange={(event) => setForm({ ...form, category: event.target.value })}
-                  >
-                    <option value="PROMO">Promoção</option>
-                    <option value="RECOMMENDED">Recomendado</option>
-                  </select>
+                  <div>
+                    <label style={{ fontSize: '14px', fontWeight: '600', color: '#333', marginBottom: '6px', display: 'block' }}>Preço</label>
+                    <input
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      value={form.price}
+                      onChange={(event) => setForm({ ...form, price: event.target.value })}
+                      required
+                    />
+                  </div>
 
-                  <select
-                    value={form.petSpecies}
-                    onChange={(event) => setForm({ ...form, petSpecies: event.target.value })}
-                  >
-                    <option value="DOG">Cachorro</option>
-                    <option value="CAT">Gato</option>
-                    <option value="BIRD">Pássaro</option>
-                    <option value="FISH">Peixe</option>
-                    <option value="RABBIT">Coelho</option>
-                    <option value="HAMSTER">Hamster</option>
-                    <option value="EXOTIC">Exótico</option>
-                    <option value="ALL">Todos</option>
-                  </select>
+                  <div>
+                    <label style={{ fontSize: '14px', fontWeight: '600', color: '#333', marginBottom: '6px', display: 'block' }}>Preço Assinante</label>
+                    <input
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      value={form.subscriberPrice}
+                      onChange={(event) => setForm({ ...form, subscriberPrice: event.target.value })}
+                      required
+                    />
+                  </div>
 
-                  <input
-                    type="number"
-                    min="0"
-                    value={form.stockQuantity}
-                    onChange={(event) => setForm({ ...form, stockQuantity: event.target.value })}
-                    placeholder="Estoque"
-                    required
-                  />
+                  <div>
+                    <label style={{ fontSize: '14px', fontWeight: '600', color: '#333', marginBottom: '6px', display: 'block' }}>Imagem</label>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <button
+                        type="button"
+                        onClick={() => document.getElementById('image-file-input').click()}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          padding: '10px 16px',
+                          backgroundColor: '#0c6efc',
+                          color: '#fff',
+                          border: 'none',
+                          borderRadius: '8px',
+                          cursor: 'pointer',
+                          fontSize: '14px',
+                          fontWeight: '600',
+                        }}
+                      >
+                        📁 Selecionar
+                      </button>
+                      {form.image && (
+                        <span style={{ fontSize: '13px', color: '#666', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '200px' }}>
+                          {form.image.substring(form.image.lastIndexOf('/') + 1).substring(0, 20)}
+                        </span>
+                      )}
+                    </div>
+                    <input
+                      id="image-file-input"
+                      type="file"
+                      accept="image/*"
+                      onChange={(event) => {
+                        const file = event.target.files?.[0];
+                        if (file) {
+                          const reader = new FileReader();
+                          reader.onload = (e) => {
+                            setForm({ ...form, image: e.target?.result });
+                          };
+                          reader.readAsDataURL(file);
+                        }
+                      }}
+                      style={{ display: 'none' }}
+                    />
+                  </div>
+
+                  <div>
+                    <label style={{ fontSize: '14px', fontWeight: '600', color: '#333', marginBottom: '6px', display: 'block' }}>Categoria</label>
+                    <select
+                      value={form.category}
+                      onChange={(event) => setForm({ ...form, category: event.target.value })}
+                    >
+                      <option value="PROMO">Promoção</option>
+                      <option value="RECOMMENDED">Recomendado</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label style={{ fontSize: '14px', fontWeight: '600', color: '#333', marginBottom: '10px', display: 'block' }}>Animais</label>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                      {['DOG', 'CAT', 'BIRD', 'FISH', 'RABBIT', 'HAMSTER', 'EXOTIC'].map((species) => (
+                        <label key={species} style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer' }}>
+                          <input
+                            type="checkbox"
+                            checked={form.petSpecies.includes(species)}
+                            onChange={(event) => {
+                              const updated = event.target.checked
+                                ? [...form.petSpecies, species]
+                                : form.petSpecies.filter((s) => s !== species);
+                              setForm({ ...form, petSpecies: updated });
+                            }}
+                          />
+                          {species === 'DOG' && 'Cachorro'}
+                          {species === 'CAT' && 'Gato'}
+                          {species === 'BIRD' && 'Pássaro'}
+                          {species === 'FISH' && 'Peixe'}
+                          {species === 'RABBIT' && 'Coelho'}
+                          {species === 'HAMSTER' && 'Hamster'}
+                          {species === 'EXOTIC' && 'Exótico'}
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label style={{ fontSize: '14px', fontWeight: '600', color: '#333', marginBottom: '6px', display: 'block' }}>Estoque</label>
+                    <input
+                      type="number"
+                      min="0"
+                      value={form.stockQuantity}
+                      onChange={(event) => setForm({ ...form, stockQuantity: event.target.value })}
+                      required
+                    />
+                  </div>
 
                   <div className="admin-form-actions">
                     <button type="submit">{editingId ? 'Atualizar' : 'Criar'}</button>
@@ -359,8 +425,21 @@ const OwnerAdmin = () => {
                 <h2>Catálogo</h2>
                 <div className="admin-list">
                   {products.map((product, index) => (
-                    <div key={product.id} className="admin-list-item">
-                      <div>
+                    <div key={product.id} className="admin-list-item" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                      <img
+                        src={product.image}
+                        alt={product.title}
+                        style={{
+                          width: '80px',
+                          height: '80px',
+                          objectFit: 'contain',
+                          border: '1px solid #edf0f4',
+                          borderRadius: '8px',
+                          padding: '5px',
+                          flexShrink: 0,
+                        }}
+                      />
+                      <div style={{ flex: 1 }}>
                         <strong>{product.title}</strong>
                         <p>
                           {formatCurrency(product.price)} · Estoque: {product.stockQuantity}
@@ -384,27 +463,128 @@ const OwnerAdmin = () => {
           {activeTab === 'orders' && (
             <section className="admin-card">
               <h2>Pedidos e Entregas</h2>
-              <div className="admin-list">
-                {orders.map((order) => (
-                  <div key={order.id} className="admin-list-item">
-                    <div>
-                      <strong>{order.orderCode}</strong>
-                      <p>
-                        {order.customerName} · {formatCurrency(order.totalAmount)}
-                      </p>
-                    </div>
-                    <select
-                      value={order.status}
-                      onChange={(event) => changeOrderStatus(order.id, event.target.value)}
+              <div style={{ display: 'grid', gap: '20px' }}>
+                {orders.map((order) => {
+                  let items = [];
+                  try {
+                    items = order.itemsJson ? JSON.parse(order.itemsJson) : [];
+                  } catch (e) {
+                    items = [];
+                  }
+                  
+                  const formattedDate = new Date(order.createdAt).toLocaleDateString('pt-BR', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  });
+
+                  return (
+                    <div
+                      key={order.id}
+                      style={{
+                        border: '1px solid #edf0f4',
+                        borderRadius: '8px',
+                        padding: '16px',
+                        backgroundColor: '#fff',
+                      }}
                     >
-                      {Object.entries(statusLabels).map(([value, label]) => (
-                        <option key={value} value={value}>
-                          {label}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                ))}
+                      {/* Header */}
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '12px' }}>
+                        <div>
+                          <strong style={{ fontSize: '16px' }}>{order.orderCode}</strong>
+                          <p style={{ fontSize: '13px', color: '#666', margin: '4px 0 0 0' }}>
+                            {formattedDate}
+                          </p>
+                        </div>
+                        <select
+                          value={order.status}
+                          onChange={(event) => changeOrderStatus(order.id, event.target.value)}
+                          style={{
+                            padding: '6px 10px',
+                            borderRadius: '6px',
+                            border: '1px solid #d7dbe0',
+                            fontSize: '13px',
+                          }}
+                        >
+                          {Object.entries(statusLabels).map(([value, label]) => (
+                            <option key={value} value={value}>
+                              {label}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      {/* Customer & Order Info */}
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px', fontSize: '13px', color: '#555' }}>
+                        <p><strong>Cliente:</strong> {order.customerName}</p>
+                        <p><strong>Telefone:</strong> {order.customerPhone || 'N/A'}</p>
+                        <p><strong>Email:</strong> {order.customerEmail || 'N/A'}</p>
+                        <p><strong>Método de Pagamento:</strong> {order.paymentMethod || 'N/A'}</p>
+                      </div>
+
+                      {/* Delivery Address */}
+                      {order.deliveryAddress && (
+                        <div style={{ marginBottom: '12px', padding: '10px', backgroundColor: '#f9fafb', borderRadius: '6px', fontSize: '13px' }}>
+                          <strong>Endereço de Entrega:</strong>
+                          <p style={{ margin: '4px 0 0 0', color: '#555', whiteSpace: 'pre-wrap' }}>{order.deliveryAddress}</p>
+                        </div>
+                      )}
+
+                      {/* Items */}
+                      {items.length > 0 && (
+                        <div style={{ marginBottom: '12px' }}>
+                          <strong style={{ fontSize: '13px', display: 'block', marginBottom: '8px' }}>Produtos:</strong>
+                          <div style={{ display: 'grid', gap: '8px' }}>
+                            {items.map((item, idx) => (
+                              <div
+                                key={idx}
+                                style={{
+                                  display: 'flex',
+                                  gap: '10px',
+                                  padding: '8px',
+                                  backgroundColor: '#f9fafb',
+                                  borderRadius: '6px',
+                                  alignItems: 'flex-start',
+                                }}
+                              >
+                                {item.image && (
+                                  <img
+                                    src={item.image}
+                                    alt={item.title}
+                                    style={{
+                                      width: '50px',
+                                      height: '50px',
+                                      objectFit: 'contain',
+                                      border: '1px solid #eee',
+                                      borderRadius: '4px',
+                                      padding: '2px',
+                                      flexShrink: 0,
+                                    }}
+                                  />
+                                )}
+                                <div style={{ fontSize: '13px', flex: 1 }}>
+                                  <p style={{ margin: '0 0 2px 0', fontWeight: '500' }}>
+                                    {item.title}
+                                  </p>
+                                  <p style={{ margin: '0', color: '#666' }}>
+                                    {item.quantity}x {formatCurrency(item.price)}
+                                  </p>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Total */}
+                      <div style={{ textAlign: 'right', paddingTop: '12px', borderTop: '1px solid #eee', fontSize: '14px', fontWeight: '600' }}>
+                        Total: {formatCurrency(order.totalAmount)}
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </section>
           )}

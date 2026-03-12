@@ -23,8 +23,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 		  AND (:category IS NULL OR p.category = :category)
 		  AND (
 				:petSpecies IS NULL
-				OR p.petSpecies = :petSpecies
-				OR p.petSpecies = com.reuelpet.model.enums.PetSpecies.ALL
+				OR :petSpecies MEMBER OF p.petSpecies
+				OR com.reuelpet.model.enums.PetSpecies.ALL MEMBER OF p.petSpecies
 			  )
 		ORDER BY p.sortOrder ASC, p.id ASC
 	""")

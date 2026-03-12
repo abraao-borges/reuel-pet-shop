@@ -2,6 +2,8 @@ package com.reuelpet.model;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.reuelpet.model.enums.PetSpecies;
 import com.reuelpet.model.enums.ProductCategory;
@@ -29,8 +31,11 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private ProductCategory category;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "product_pet_species", joinColumns = @JoinColumn(name = "product_id"))
+    @Column(name = "pet_species")
     @Enumerated(EnumType.STRING)
-    private PetSpecies petSpecies;
+    private Set<PetSpecies> petSpecies = new HashSet<>();
 
     private Integer sortOrder;
 
